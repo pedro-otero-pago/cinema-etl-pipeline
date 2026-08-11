@@ -44,3 +44,9 @@ erDiagram
     datetime end_time
   }
 ```
+
+## Project structure
+
+- `scraper.py` — fetches raw HTML from a given URL, with a browser
+  User-Agent, a request timeout, and error handling for both connection
+  failures and non-200 status codes.
