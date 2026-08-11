@@ -48,4 +48,10 @@ I wanted to use this attribute to help the cinema coordinate session times
 across theatres, by preventing a movie from starting in a room before
 another movie showing there had finished. However, this data source does
 not provide information on which room each movie will be shown in, so this
-validation is out of scope for now.
+validation is out of scope for now.´
+
+Note on notation: the schema was designed using classic Chen notation
+(entities as rectangles, relationships as diamonds, single/double lines
+for cardinality), but the diagram in README.md uses Mermaid's crow's-foot
+syntax instead, since that is what GitHub renders natively. Both represent
+the same schema.
