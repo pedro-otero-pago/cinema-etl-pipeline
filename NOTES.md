@@ -35,3 +35,17 @@ cast, genre, duration, age rating, country, synopsis, showtimes, and rating.
 
 I decided to leave out trailer and photo links, since they are media content
 rather than structured data useful for analysis.
+
+## Database schema
+
+See the entity-relation diagram in README.md.
+
+I feel the need to clarify that `end_time` is a derived attribute: it is
+calculated by adding the movie's duration to the showtime's start time,
+both of which are already stored in the database.
+
+I wanted to use this attribute to help the cinema coordinate session times
+across theatres, by preventing a movie from starting in a room before
+another movie showing there had finished. However, this data source does
+not provide information on which room each movie will be shown in, so this
+validation is out of scope for now.
