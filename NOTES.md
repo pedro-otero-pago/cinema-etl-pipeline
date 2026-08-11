@@ -55,3 +55,27 @@ Note on notation: the schema was designed using classic Chen notation
 for cardinality), but the diagram in README.md uses Mermaid's crow's-foot
 syntax instead, since that is what GitHub renders natively. Both represent
 the same schema.
+
+## Scraper findings
+
+After inspecting the actual HTML of the cinema listing page, I confirmed
+selectors for every field defined in the database schema except synopsis,
+which is not available on this page. Some fields (age rating, duration)
+are missing for some movies and will have to be handled as optional.
+
+I initially thought showtimes were loaded via JavaScript/AJAX, since the
+first movie card I inspected had an empty sessions list. This was wrong:
+showtimes are present in the static HTML, they were just empty for that
+specific movie on that day. The time is available directly as a
+`data-session-time` attribute on each session link, so no parsing of link
+text is needed.
+
+I also found that the country, genre, duration, and age rating fields
+(inside `p.data`) do not hold a fixed position — for example, age rating
+might be the third span in one movie and the fourth in another. Because
+of this, each span will have to be classified by its shape (e.g. ends in
+"min." → duration, starts with "+" or equals "TP" → age rating) instead
+of relying on its position in the list.
+
+Finally, the synopsis is confirmed to be missing from this page. Getting
+it will require a second request to each movie's individual page.
