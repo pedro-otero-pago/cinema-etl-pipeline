@@ -79,3 +79,23 @@ of relying on its position in the list.
 
 Finally, the synopsis is confirmed to be missing from this page. Getting
 it will require a second request to each movie's individual page.
+
+## Parser: country and genre classification
+
+While writing parser.py, I ran into a problem with country and genre:
+there was no reliable pattern to distinguish them from the raw text,
+unlike duration or age rating, which have a clear shape.
+
+The solution I found was creating a separate file, constants.py, with
+sets of known countries and genres. Each text is classified by checking
+whether it belongs to one of these sets, instead of relying on its
+position or classifying it by elimination.
+
+Any text is compared in lowercase (using .lower()) against the sets, to
+avoid mismatches caused by different capitalization, while the original
+text (not the lowercased version) is the one actually stored.
+
+Any text that doesn't match duration, age rating, a known country, or a
+known genre triggers a warning printed to the console, so unclassified
+values can be reviewed and the catalogs expanded over time.
+

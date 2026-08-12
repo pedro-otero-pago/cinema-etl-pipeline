@@ -50,3 +50,11 @@ erDiagram
 - `scraper.py` — fetches raw HTML from a given URL, with a browser
   User-Agent, a request timeout, and error handling for both connection
   failures and non-200 status codes.
+- `parser.py` — parses the raw HTML into a list of movie dictionaries
+  using BeautifulSoup. Fields with a fixed position (title, director,
+  cast, rating, showtimes) are extracted directly; fields with variable
+  position (country, genre, duration, age rating) are classified by
+  shape/membership rather than by index.
+- `constants.py` — known-value catalogs (countries, genres) used to
+  classify the variable-position fields by membership instead of by
+  process of elimination.
