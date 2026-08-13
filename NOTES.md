@@ -48,7 +48,7 @@ I wanted to use this attribute to help the cinema coordinate session times
 across theatres, by preventing a movie from starting in a room before
 another movie showing there had finished. However, this data source does
 not provide information on which room each movie will be shown in, so this
-validation is out of scope for now.´
+validation is out of scope for now.
 
 Note on notation: the schema was designed using classic Chen notation
 (entities as rectangles, relationships as diamonds, single/double lines
@@ -99,3 +99,27 @@ Any text that doesn't match duration, age rating, a known country, or a
 known genre triggers a warning printed to the console, so unclassified
 values can be reviewed and the catalogs expanded over time.
 
+## Transformer: cleaning and derived fields
+
+For missing fields (duration, rating, age rating, country, genre), I
+decided not to fill them with default values, even when a reasonable
+guess existed (e.g. assuming a missing age rating means "suitable for
+all audiences"). Keeping them as explicit nulls is more honest to what
+the source actually provided.
+
+For duration, I extracted the number and stripped the " min." part using
+a regex, then converted it to float (not int) so that missing values
+(NaN) can coexist in the same column without breaking the conversion.
+
+For showtimes, I added today's date to each session's start time, since
+the pipeline runs once a day, so all showtimes scraped in a single run
+belong to that same execution date.
+
+For end_time, I added the movie's duration to each start time using
+timedelta, skipping the calculation (returning None) when duration is
+missing, since it can't be derived without it.
+
+I also added a line that removes duplicate movies within the same
+scraping run, as a safety net — even though duplicates shouldn't occur
+in a single run, and the actual day-to-day upsert logic will live in the
+database layer, not here.

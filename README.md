@@ -1,4 +1,4 @@
-# cinema-epl-pipeline
+# cinema-etl-pipeline
 Automated ETL pipeline that scrapes local cinema showtimes, cleans the data, and loads it into a relational database on a daily schedule, with a stack including Python, BeautifulSoup, pandas and SQLAlchemy.
 
 ## Database schema
@@ -58,3 +58,8 @@ erDiagram
 - `constants.py` — known-value catalogs (countries, genres) used to
   classify the variable-position fields by membership instead of by
   process of elimination.
+  - `transformer.py` — cleans and transforms the parsed data using pandas.
+  Missing fields are kept as explicit nulls rather than filled with
+  default values. Duration is converted to a numeric type, showtimes are
+  converted to real datetimes using the execution date, and end_time is
+  derived from duration and start_time.
