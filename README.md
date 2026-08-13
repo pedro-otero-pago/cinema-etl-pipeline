@@ -80,3 +80,6 @@ erDiagram
   genre, and cast to the database, using a single session for the whole
   run. Handles movies with missing duration or genre without crashing
   the pipeline.
+- `config.py` — centralizes configuration values (target URL, User-Agent,
+  request timeout, database connection string) used across the other
+  modules, instead of hardcoding them in each file.

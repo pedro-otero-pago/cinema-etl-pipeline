@@ -2,8 +2,7 @@ from scraper import fetch_html
 from parser import parse_movies
 from transformer import transform_movies
 from database import Session, upsert_movie, add_showtime, get_or_create_genre, link_movie_genre, get_or_create_actor, link_movie_actor
-
-CINEMA_URL = "https://www.ecartelera.com/cines/cinesa-marineda-city/"
+from config import CINEMA_URL
 
 html = fetch_html(CINEMA_URL)
 movies = parse_movies(html)
