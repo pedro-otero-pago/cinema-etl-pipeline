@@ -63,3 +63,9 @@ erDiagram
   default values. Duration is converted to a numeric type, showtimes are
   converted to real datetimes using the execution date, and end_time is
   derived from duration and start_time.
+- `models.py` — SQLAlchemy ORM models translating the ER schema into
+  Python classes: `Genre`, `Actor`, `Movie`, `Showtime`, and the junction
+  tables `HasGenre` and `HasActor` (with composite primary keys for the
+  N:M relationships). Uses SQLite as the underlying engine for
+  portability; switching to PostgreSQL would only require changing the
+  connection string in `database.py`.

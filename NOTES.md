@@ -123,3 +123,18 @@ I also added a line that removes duplicate movies within the same
 scraping run, as a safety net — even though duplicates shouldn't occur
 in a single run, and the actual day-to-day upsert logic will live in the
 database layer, not here.
+
+## Models and database engine choice
+
+I decided to start with SQLite instead of a real database engine like 
+PostgreSQL, since it requires no external setup (just a local file) and 
+makes the project easy to clone and run for anyone reviewing it. Because 
+SQLAlchemy abstracts the underlying engine, switching to PostgreSQL 
+later would only require changing the connection string in database.py, 
+not models.py.
+
+Each entity from the ER diagram was translated directly into a
+SQLAlchemy class inheriting from Base: Genre, Actor, Movie, Showtime,
+and the two junction tables, HasGenre and HasActor, which use composite
+primary keys (movie_id + genre_id / actor_id) matching the N:M
+relationships from the schema.
