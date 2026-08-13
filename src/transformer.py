@@ -1,5 +1,5 @@
 import pandas as pd
-from datatime import date
+from datetime import date
 from datetime import timedelta
 
 def transform_movies(movies):
