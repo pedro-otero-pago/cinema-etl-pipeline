@@ -159,3 +159,29 @@ return the existing row if found, otherwise create it. Linking a movie
 to a genre or actor also checks whether that specific link already
 exists before inserting, to avoid duplicate rows in the junction tables
 when the same movie is scraped again on a later day.
+
+## Orchestrator (main.py)
+
+main.py wires together every phase in order: fetch_html -> parse_movies
+-> transform_movies -> a loop over the resulting DataFrame that persists
+each movie, its showtimes, genre, and cast using the functions from
+database.py.
+
+While writing the showtimes loop, I caught a bug before running it: when
+a movie has no known duration, end_time is None (not an empty list, see
+transformer.py), while showtimes is still a normal list of start times.
+Passing these directly to zip() would raise a TypeError, since zip()
+requires both arguments to be iterable. The loop now checks whether
+end_time is None first, and if so, still saves each showtime with
+end_time set to None, instead of skipping the movie's sessions entirely
+or crashing the whole run.
+
+A similar guard was needed for genre: since it can be None when the
+value didn't match any known genre, linking it without checking first
+could create a "genre" row with no name.
+
+I create a single Session for the entire run, outside the loop, instead
+of one per movie. Besides avoiding unnecessary connection overhead, it
+treats one full pipeline execution as a single coherent unit of work,
+rather than as several unrelated operations that happen to share a
+script.

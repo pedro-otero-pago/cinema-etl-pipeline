@@ -75,3 +75,8 @@ erDiagram
   (always inserts, since each session on each day is a distinct record),
   and get-or-create + link helpers for genres and actors, avoiding
   duplicate rows in the junction tables.
+- `main.py` — orchestrates the full pipeline: fetches the HTML, parses
+  it, transforms it with pandas, and persists each movie, its showtimes,
+  genre, and cast to the database, using a single session for the whole
+  run. Handles movies with missing duration or genre without crashing
+  the pipeline.
