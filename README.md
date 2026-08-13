@@ -69,3 +69,9 @@ erDiagram
   N:M relationships). Uses SQLite as the underlying engine for
   portability; switching to PostgreSQL would only require changing the
   connection string in `database.py`.
+- `database.py` — connects to a SQLite database via SQLAlchemy's engine
+  and Session, creates the tables from `models.py`, and provides
+  `upsert_movie` (update-if-exists / insert-if-new), `add_showtime`
+  (always inserts, since each session on each day is a distinct record),
+  and get-or-create + link helpers for genres and actors, avoiding
+  duplicate rows in the junction tables.

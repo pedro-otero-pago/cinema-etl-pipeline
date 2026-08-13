@@ -138,3 +138,24 @@ SQLAlchemy class inheriting from Base: Genre, Actor, Movie, Showtime,
 and the two junction tables, HasGenre and HasActor, which use composite
 primary keys (movie_id + genre_id / actor_id) matching the N:M
 relationships from the schema.
+
+## Database persistence: upsert logic and helper functions
+
+For database.py, I used SQLAlchemy's engine + Session pattern: the
+engine handles the low-level connection to SQLite, while the Session is
+what actually reads and writes data, similar to how git add/commit work
+(stage changes, then confirm them together).
+
+I implemented separate upsert logic depending on the entity, matching
+the decision made earlier for the schema: upsert_movie checks whether a
+movie with the same title already exists — if so, it updates its fields
+by direct attribute assignment (SQLAlchemy tracks the change
+automatically); if not, it creates a new row. add_showtime always
+inserts a new row and never updates, since each session on each day is
+a genuinely different record, not a duplicate.
+
+For genres and actors, I used a get-or-create pattern: look up by name,
+return the existing row if found, otherwise create it. Linking a movie
+to a genre or actor also checks whether that specific link already
+exists before inserting, to avoid duplicate rows in the junction tables
+when the same movie is scraped again on a later day.
