@@ -224,3 +224,28 @@ fixture.
 
 Needed a conftest.py to add src/ to the Python path, since pytest runs
 from src/tests/ but parser.py lives in src/.
+
+## First full run and CI fixes
+
+Running the pipeline end-to-end for the first time (via GitHub Actions,
+since it had only been tested piece by piece locally) surfaced two real
+issues:
+
+A typo in transformer.py — pd.to_datatime instead of pd.to_datetime —
+broke the showtimes conversion. This had gone unnoticed because it was
+never exercised in a full run before.
+
+A genre variant, "Aventura" (singular), triggered the unclassified-field
+warning, since constants.py only had "aventuras" (plural). Added the
+singular form to KNOWN_GENRES.
+
+The workflow also failed on its first successful pipeline run when
+trying to push the updated cinema.db back to the repository: the
+default GITHUB_TOKEN only has read access unless explicitly granted
+write permissions. Adding `permissions: contents: write` to the
+workflow fixed it.
+
+These issues reinforced why persisting cinema.db by committing it back
+to the repo (rather than losing it each run) matters: without that step
+working, every day's scraped data would have been discarded the moment
+the runner's virtual machine was destroyed.

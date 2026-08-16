@@ -92,3 +92,12 @@ erDiagram
 - pytest -v
 
 Fixtures with real saved HTML live in `tests/fixtures/` so tests don't depend on network access.
+
+## Automation
+
+A GitHub Actions workflow (`.github/workflows/pipeline.yml`) runs the
+pipeline daily via cron, and can also be triggered manually. Since each
+run happens on a fresh, disposable virtual machine, the workflow commits
+the updated `cinema.db` back to the repository after each run, so data
+persists across executions instead of being lost when the runner is
+torn down.
