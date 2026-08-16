@@ -85,3 +85,10 @@ erDiagram
 - `config.py` — centralizes configuration values (target URL, User-Agent,
   request timeout, database connection string) used across the other
   modules, instead of hardcoding them in each file.
+
+## Running tests
+
+- cd src/tests
+- pytest -v
+
+Fixtures with real saved HTML live in `tests/fixtures/` so tests don't depend on network access.

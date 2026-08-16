@@ -204,3 +204,23 @@ loop as saving it to the database, with a time.sleep(1) between
 requests — this is the first place in the pipeline that makes several
 requests in a row, so it's where the earlier design decision about
 respecting a delay between requests actually applies.
+
+## Tests
+
+Added test_parser.py covering parse_movies and parse_synopsis, using
+real HTML fixtures saved from the cinema listing page and an individual
+movie page, instead of live requests. 17 tests total, covering: overall
+structure (count, keys, types), fixed-position fields, variable-position
+fields with a known real example (La Odisea), movies with missing
+fields, showtimes as always a list (including the empty case), and
+synopsis extraction while excluding the empty ad placeholder div.
+
+I initially saved fixtures using "Save As" from the browser's source
+view, which produced HTML wrapped in syntax-highlighting markup
+(<td class="line-content">) instead of plain HTML — the parser couldn't
+find any elements against it. Copy-pasting the raw source text directly
+solved this; it's the same issue I hit with the first cartelera
+fixture.
+
+Needed a conftest.py to add src/ to the Python path, since pytest runs
+from src/tests/ but parser.py lives in src/.
