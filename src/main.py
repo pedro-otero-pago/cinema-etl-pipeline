@@ -1,5 +1,6 @@
+import time
 from scraper import fetch_html
-from parser import parse_movies
+from parser import parse_movies, parse_synopsis
 from transformer import transform_movies
 from database import Session, upsert_movie, add_showtime, get_or_create_genre, link_movie_genre, get_or_create_actor, link_movie_actor
 from config import CINEMA_URL
@@ -11,7 +12,13 @@ df = transform_movies(movies)
 session = Session()
 
 for index, row in df.iterrows():
-    movie = upsert_movie(session, row.to_dict())
+    synopsis_html = fetch_html(row["movie_url"])
+    synopsis = parse_synopsis(synopsis_html)
+    time.sleep(1)
+
+    movie_data = row.to_dict()
+    movie_data["synopsis"] = synopsis
+    movie = upsert_movie(session, movie_data)
 
     if row["end_time"] is not None:
         for start_time, end_time in zip(row["showtimes"], row["end_time"]):

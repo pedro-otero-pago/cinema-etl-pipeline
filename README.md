@@ -54,7 +54,8 @@ erDiagram
   using BeautifulSoup. Fields with a fixed position (title, director,
   cast, rating, showtimes) are extracted directly; fields with variable
   position (country, genre, duration, age rating) are classified by
-  shape/membership rather than by index.
+  shape/membership rather than by index. Also includes parse_synopsis,
+  which parses a movie's individual page.
 - `constants.py` — known-value catalogs (countries, genres) used to
   classify the variable-position fields by membership instead of by
   process of elimination.
@@ -79,7 +80,8 @@ erDiagram
   it, transforms it with pandas, and persists each movie, its showtimes,
   genre, and cast to the database, using a single session for the whole
   run. Handles movies with missing duration or genre without crashing
-  the pipeline.
+  the pipeline and fetches each movie's synopsis from its individual page, 
+  with a delay between requests.
 - `config.py` — centralizes configuration values (target URL, User-Agent,
   request timeout, database connection string) used across the other
   modules, instead of hardcoding them in each file.

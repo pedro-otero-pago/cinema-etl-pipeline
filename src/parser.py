@@ -10,6 +10,7 @@ def parse_movies(html):
 
     for card in movie_cards:
         title = card.find("p", class_="tit").find("a").text.strip()
+        movie_url = card.find("p", class_="tit").find("a")["href"]
         director = card.find("p", class_="dir").find("a").text.strip()
         data_spans = card.find("p", class_="data").find_all("span")
         data_texts = [span.text.strip() for span in data_spans]
@@ -40,6 +41,7 @@ def parse_movies(html):
 
         movies.append({
             "title": title,
+            "movie_url": movie_url,
             "director": director,
             "duration": duration,
             "age_rating": age_rating,
@@ -51,3 +53,12 @@ def parse_movies(html):
         })
 
     return movies
+
+def parse_synopsis(html):
+    soup = BeautifulSoup(html, "html.parser")
+    synopsis_div = soup.find("div", class_="f-txt")
+
+    if synopsis_div:
+        return synopsis_div.get_text(separator=" ", strip=True)
+    else:
+        return None

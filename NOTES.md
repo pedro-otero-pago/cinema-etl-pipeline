@@ -185,3 +185,22 @@ of one per movie. Besides avoiding unnecessary connection overhead, it
 treats one full pipeline execution as a single coherent unit of work,
 rather than as several unrelated operations that happen to share a
 script.
+
+## Synopsis (second request per movie)
+
+Since the synopsis is not available on the listing page, I added
+movie_url to the dictionary returned by parse_movies (extracted from
+the same <a> tag used for the title, via its href attribute).
+
+I added a second parsing function, parse_synopsis, for the individual
+movie page. The synopsis HTML turned out to be malformed (nested <p>
+tags around an empty ad placeholder div), but BeautifulSoup handles it
+without issues — extracting all text from the containing div.f-txt,
+rather than paragraph by paragraph, avoids depending on that malformed
+structure.
+
+In main.py, fetching each movie's individual page happens in the same
+loop as saving it to the database, with a time.sleep(1) between
+requests — this is the first place in the pipeline that makes several
+requests in a row, so it's where the earlier design decision about
+respecting a delay between requests actually applies.
