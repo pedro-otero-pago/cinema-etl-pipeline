@@ -9,7 +9,7 @@ def transform_movies(movies):
 
     today = date.today().isoformat()
     df["showtimes"] = df["showtimes"].apply(
-        lambda times: [pd.to_datatime(f"{today} {t}") for t in times]
+        lambda times: [pd.to_datetime(f"{today} {t}") for t in times]
     )
 
     df["end_time"] = df.apply(

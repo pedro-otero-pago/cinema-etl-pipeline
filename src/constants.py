@@ -48,7 +48,7 @@ KNOWN_COUNTRIES = {
 }
 
 KNOWN_GENRES = {
-    "acción", "animación", "aventuras", "bélica", "biográfica",
+    "acción", "animación", "aventura", "aventuras", "bélica", "biográfica",
     "ciencia ficción", "cine negro", "comedia", "comedia dramática",
     "comedia musical", "comedia romántica", "cortometraje", "documental",
     "drama", "erótica", "fantástico", "fantasía", "familiar", "histórica",
