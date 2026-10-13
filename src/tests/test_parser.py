@@ -1,9 +1,11 @@
 import pytest
 from parser import parse_movies, parse_synopsis
+import os
 
+FIXTURES_DIR = os.path.join(os.path.dirname(__file__), "fixtures")
 
 def load_fixture(filename):
-    with open(f"fixtures/{filename}", encoding="utf-8") as f:
+    with open(os.path.join(FIXTURES_DIR, filename), encoding="utf-8") as f:
         return f.read()
 
 

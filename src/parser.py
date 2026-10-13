@@ -11,7 +11,8 @@ def parse_movies(html):
     for card in movie_cards:
         title = card.find("p", class_="tit").find("a").text.strip()
         movie_url = card.find("p", class_="tit").find("a")["href"]
-        director = card.find("p", class_="dir").find("a").text.strip()
+        dir_tag = card.find("p", class_="dir")
+        director = dir_tag.find("a").text.strip() if dir_tag and dir_tag.find("a") else None
         data_spans = card.find("p", class_="data").find_all("span")
         data_texts = [span.text.strip() for span in data_spans]
         cast = [a.text.strip() for a in card.find("p", class_="cast").find_all("a")]
